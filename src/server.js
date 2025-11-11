@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
+import authorRoutes from './routes/authorRoutes.js';
 dotenv.config();
 
 
@@ -15,6 +16,7 @@ app.use(morgan('tiny'));
 app.use(express.json());
 
 app.use('/auth', authRoutes);
+app.use('/authors', authorRoutes);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
