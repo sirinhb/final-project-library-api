@@ -1,7 +1,20 @@
 import * as genreService from '../services/genreService.js';
 
 export async function getGenresHandler(req, res, next) {
-  const genres = await genreService.getAllGenres();
+  const {
+    sortBy = 'id',
+    sortOrder = 'asc',
+    limit = 10,
+    offset = 0,
+  } = req.query;
+
+  const filter = {};
+  filter.sortBy = sortBy;
+  filter.sortOrder = sortOrder;
+  filter.limit = parseInt(limit);
+  filter.offset = parseInt(offset);
+
+  const genres = await genreService.getAllGenres(filter);
   res.json(genres);
 }
 

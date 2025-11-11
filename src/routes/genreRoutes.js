@@ -1,21 +1,21 @@
 import express from 'express';
 import * as genreController from '../controllers/genreController.js';
+import { validateGenreQuery, validateGenreId, validateGenre } from '../middleware/genreValidators.js'
 
 // To Do:
-//      Validation
 //      Authorization
 //      Documentation
 
 const router = express.Router();
 
-router.get('/', genreController.getGenresHandler);
-router.get('/:id', genreController.getGenreByIdHandler);
-router.get('/:id/books', genreController.getGenreBooksByIdHandler);
+router.get('/', validateGenreQuery, genreController.getGenresHandler);
+router.get('/:id', validateGenreId, genreController.getGenreByIdHandler);
+router.get('/:id/books', validateGenreId, validateGenreQuery, genreController.getGenreBooksByIdHandler);
 
-router.post('/', genreController.createGenreHandler);
+router.post('/', validateGenre, genreController.createGenreHandler);
 
-router.put('/:id', genreController.updateGenreHandler);
+router.put('/:id', validateGenreId, validateGenre, genreController.updateGenreHandler);
 
-router.delete('/:id', genreController.deleteGenreHandler);
+router.delete('/:id', validateGenreId, genreController.deleteGenreHandler);
 
 export default router;

@@ -1,7 +1,11 @@
 import { prisma } from '../config/db.js';
 
-export async function getAll() {
-  return prisma.genre.findMany();
+export async function getAll(filter) {
+  return prisma.genre.findMany({
+    orderBy: { [filter.sortBy]: filter.sortOrder },
+    take: filter.limit,
+    skip: filter.offset
+  });
 }
 
 export async function getById(id) {
@@ -13,10 +17,10 @@ export async function getBooksById(id) {
 }
 
 export async function create(genre) {
-  const newGenre = await prisma.genre.create({
-    data: genre,
-  });
-  return newGenre;
+    const newGenre = await prisma.genre.create({
+        data: genre,
+      });
+      return newGenre;
 }
 
 export async function update(id, updates) {
@@ -42,4 +46,9 @@ export async function remove(id) {
     if (error.code === 'P2025') return null;
     throw error;
   }
+}
+
+export async function nameExists(name) {
+  const result = await prisma.genre.findFirst({where: {name}});
+  return result;
 }
