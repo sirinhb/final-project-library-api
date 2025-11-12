@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { prisma } from '../config/db.js';
 
-
 export const login = async (req, res) => {
     const { name, password } = req.body;
     console.log('Login attempt:', name);

@@ -4,9 +4,9 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import genreRoutes from './routes/genreRoutes.js';
+import bookRoutes from './routes/bookRoutes.js';
 
 dotenv.config();
-
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,8 +16,10 @@ app.use(morgan('tiny'));
 
 app.use(express.json());
 
-app.use('/auth', authRoutes);
-app.use('/genre', genreRoutes);
+
+app.use('/api/auth', authRoutes);
+app.use('/api/books', bookRoutes);
+app.use('/api/genre', genreRoutes);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
