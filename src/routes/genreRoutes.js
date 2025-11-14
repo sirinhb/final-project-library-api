@@ -5,9 +5,6 @@ import { validateGenreQuery, validateGenreId, validateGenre } from '../middlewar
 import authenticate from '../middleware/authenticate.js';
 import { authorizeRole } from '../middleware/authorizeRole.js';
 
-// To Do:
-//      Fix Error When Deleting Genre That has books attached(Validation)
-
 const router = express.Router();
 
 router.get('/', authenticate, authorizeRole('MANAGER', 'LIBRARIAN'), validateGenreQuery, genreController.getGenresHandler);

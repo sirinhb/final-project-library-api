@@ -40,10 +40,17 @@ export async function updateGenre(id, data) {
 
 export async function deleteGenre(id) {
   const result = await genreRepository.remove(id);
-  if (result) return;
-  else {
+  if (result.deleted){
+    return;
+  }
+  else if(result.error === 'not_found') {
     const error = new Error(`Cannot find post with id ${id}`);
     error.status = 404;
+    throw error;
+  }
+  else if(result.error === 'has_books') {
+    const error = new Error(`Genre cannot be deleted, has books associated with it`);
+    error.status = 403;
     throw error;
   }
 }

@@ -1,7 +1,7 @@
 import { prisma } from '../config/db.js';
 
 export async function getAll(filter) {
-  return prisma.genre.findMany({
+  return await prisma.genre.findMany({
     orderBy: { [filter.sortBy]: filter.sortOrder },
     take: filter.limit,
     skip: filter.offset
@@ -9,11 +9,11 @@ export async function getAll(filter) {
 }
 
 export async function getById(id) {
-  return prisma.genre.findUnique({where: { id }});
+  return await prisma.genre.findUnique({where: { id }});
 }
 
 export async function getBooksById(id) {
-  return prisma.genre.findUnique({where: { id }, select: { books: { include: {genreId: false} } } });
+  return await prisma.genre.findUnique({where: { id }, select: { books: { include: {genreId: false} } } });
 }
 
 export async function create(genre) {
@@ -41,9 +41,14 @@ export async function remove(id) {
     const deletedGenre = await prisma.genre.delete({
       where: { id },
     });
-    return deletedGenre;
+    return {deleted: deletedGenre};
   } catch (error) {
-    if (error.code === 'P2025') return null;
+    if (error.code === 'P2025'){ 
+      return {deleted: null, error: 'not_found'};
+    }
+    else if(error.code === "P2003"){
+        return {deleted: null, error: 'has_books'};
+    }
     throw error;
   }
 }
