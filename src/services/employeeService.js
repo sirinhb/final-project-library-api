@@ -14,7 +14,7 @@ export async function getMyProfile(id) {
   return employeeRepo.findEmployeeByIdIncludePassword(id);
 }
 
-export async function addEmployee(data) {
+export async function registerEmployee(data) {
   data.password = await bcrypt.hash(data.password, 10);
   return employeeRepo.createEmployee(data);
 }
