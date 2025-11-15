@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { prisma}  from '../src/config/db.js';
+import prisma  from '../src/config/db.js';
 
 try {
   await prisma.book.deleteMany();
