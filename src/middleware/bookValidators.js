@@ -84,24 +84,31 @@ export const validateCreateBook = [
 ];
 
 export const validateUpdateBook = [
+  // Require at least one of stock or price
   oneOf(
     [
-      body('stock').exists({ values: 'falsy' }),
+      body('stock').exists({ checkFalsy: true }),
+      body('price').exists({ checkFalsy: true }),
     ],
     {
-      message:
-        'Stock must be provided',
-    },
+      message: 'You must provide at least stock or price to update',
+    }
   ),
 
- body('stock')
-    .exists({ values: 'falsy' })
-    .withMessage('stock is required')
-    .bail()
+  body('stock')
+    .optional()
     .trim()
     .escape()
     .isInt({min: 1})
     .withMessage('stock must be a positive integer'),
+
+
+  body('price')
+    .optional()
+    .trim()
+    .escape()
+    .isFloat({min: 0.01})
+    .withMessage('price must be a positive number'),
 
   handleValidationErrors,
 ];
