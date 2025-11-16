@@ -1,5 +1,5 @@
 import { body, param } from 'express-validator';
-import { checkValidationResults } from './handleValidationErrors.js'; 
+import { handleValidationErrors } from './handleValidationErrors.js'; 
 
 export const validateAuthor = [
   body('firstName')
@@ -18,7 +18,7 @@ export const validateAuthor = [
     .isLength({ min: 2, max: 20 })
     .withMessage('Last name must be between 2 and 20 characters'),
   
-  checkValidationResults, 
+  handleValidationErrors, 
 ];
 
 export const validateAuthorUpdate = [
@@ -36,7 +36,7 @@ export const validateAuthorUpdate = [
     .isLength({ min: 2, max: 20 })
     .withMessage('Last name must be between 2 and 20 characters'),
   
-  checkValidationResults,
+  handleValidationErrors,
 ];
 
 export const validateAuthorId = [
@@ -44,5 +44,5 @@ export const validateAuthorId = [
     .isInt({ min: 1 })
     .withMessage('ID must be a positive number'),
   
-  checkValidationResults, 
+  handleValidationErrors, 
 ];
