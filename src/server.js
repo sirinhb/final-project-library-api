@@ -3,7 +3,9 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
+import genreRoutes from './routes/genreRoutes.js';
 import bookRoutes from './routes/bookRoutes.js';
+
 import authorRoutes from './routes/authorRoutes.js';
 import employeeRoutes from './routes/employeeRoutes.js';
 dotenv.config();
@@ -16,8 +18,10 @@ app.use(morgan('tiny'));
 
 app.use(express.json());
 
+
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
+app.use('/api/genre', genreRoutes);
 app.use('/api/authors', authorRoutes);
 app.use('/api/employees', employeeRoutes);
 
