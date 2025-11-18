@@ -1,0 +1,45 @@
+get:
+  summary: Get all books by a specific author
+  tags:
+    - Author
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID of the author
+      schema:
+        type: integer
+        example: 1
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                title:
+                  type: string
+                  example: We Hunt the Flame
+                authorId:
+                  type: integer
+                  example: 1
+                genreId:
+                  type: integer
+                  example: 1
+                price:
+                  type: number
+                  format: float
+                  example: 20.00
+                stock:
+                  type: integer
+                  example: 2
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml

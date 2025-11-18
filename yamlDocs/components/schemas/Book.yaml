@@ -1,0 +1,58 @@
+type: object
+properties:
+  id:
+    type: integer
+    readOnly: true
+    example: 1
+    description: Unique identifier for the book
+  title:
+    type: string
+    minLength: 1
+    maxLength: 50
+    example: We Hunt the Flame
+    description: Title of the book
+  authorId:
+    type: integer
+    example: 1
+    description: ID of the author who wrote the book
+  genreId:
+    type: integer
+    example: 1
+    description: ID of the genre the book belongs to
+  price:
+    type: number
+    format: float
+    minimum: 0
+    example: 20.00
+    description: Price of the book
+  stock:
+    type: integer
+    minimum: 0
+    example: 2
+    description: Number of copies available in stock
+  author:
+    type: object
+    readOnly: true
+    properties:
+      id:
+        type: integer
+      firstName:
+        type: string
+      lastName:
+        type: string
+    description: Author information (only included in certain endpoints)
+  genre:
+    type: object
+    readOnly: true
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    description: Genre information (only included in certain endpoints)
+required:
+  - title
+  - authorId
+  - genreId
+  - price
+  - stock

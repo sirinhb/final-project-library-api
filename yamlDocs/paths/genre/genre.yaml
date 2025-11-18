@@ -1,0 +1,48 @@
+get: 
+  summary: list all genres
+  tags: 
+    - Genre 
+  parameters: 
+    - name: completed
+      in: query
+      required: false
+      description: filter genres by completion status
+      schema: 
+        type: boolean
+        example: true
+    - name: limit
+      in: query
+      required: false
+      description: maximum number of genres to return
+      schema: 
+        type: integer
+        example: 10
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items: 
+              $ref: ../../components/schemas/Genre.yaml
+
+post: 
+  summary: create a new genre 
+  tags: 
+    - Genre
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Genre.yaml
+  responses:
+    '201':
+      description: genre created successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Genre.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml

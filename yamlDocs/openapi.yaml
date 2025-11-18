@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  title: 'Library API'
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: local development server 
+  - url: https://library-api-hvyv.onrender.com
+    description: Production server on render
+tags:
+  - name: Library
+    description: Library-related endpoints
+paths:
+  /employees: 
+    $ref: paths/employee/employee.yaml
+  /employees/{id}: 
+    $ref: paths/employee/employeeById.yaml
+  /employees/me:
+    $ref: paths/employee/employeeByMe.yaml
+  /employees/register:
+    $ref: paths/employee/employeeRegister.yaml
+  /author:
+    $ref: paths/author/author.yaml
+  /author/{id}:
+    $ref: paths/author/authorById.yaml
+  /author/{id}/books:
+    $ref: paths/author/authorBooksById.yaml
+  /book:
+    $ref: paths/book/book.yaml
+  /book/{id}:
+    $ref: paths/book/bookById.yaml
+  /genre: 
+    $ref: paths/genre/genre.yaml
+  /genre/{id}: 
+    $ref: paths/genre/genreById.yaml
+  /genre/{id}/books:
+    $ref: paths/genre/genreBooksById.yaml
+  

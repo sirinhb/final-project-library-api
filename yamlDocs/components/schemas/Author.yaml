@@ -1,0 +1,41 @@
+type: object
+properties:
+  id:
+    type: integer
+    readOnly: true
+    example: 1
+    description: Unique identifier for the author
+  firstName:
+    type: string
+    minLength: 2
+    maxLength: 50
+    example: Hafsah
+    description: Author's first name
+  lastName:
+    type: string
+    minLength: 2
+    maxLength: 50
+    example: Faizal
+    description: Author's last name
+  books:
+    type: array
+    readOnly: true
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        authorId:
+          type: integer
+        genreId:
+          type: integer
+        price:
+          type: number
+        stock:
+          type: integer
+    description: List of books by this author (only included in certain endpoints)
+required:
+  - firstName
+  - lastName

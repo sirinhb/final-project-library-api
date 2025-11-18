@@ -1,0 +1,74 @@
+get: 
+  summary: get author by ID
+  tags: 
+    - Author 
+  parameters: 
+    - name: id 
+      in: path
+      required: true 
+      description: ID of the author to retrieve
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '200': 
+      description: OK
+      content: 
+        application/json: 
+          schema: 
+          type: array
+          items:  
+            $ref: ../../components/schemas/Author.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+put: 
+  summary: update existing author by Id
+  tags: 
+    - Author
+  parameters: 
+    - name: id
+      in: path
+      required: true
+      description: ID of the author to update
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '200':
+      description: OK
+      content: 
+        application/json: 
+          schema: 
+            $ref: ../../components/schemas/Author.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+
+delete: 
+  summary: Delete author by id
+  tags: 
+    - Author
+  parameters: 
+    - name: id 
+      in: path
+      required: true
+      description: ID of the author to delete
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '200': 
+      description: OK
+      content: 
+        application/json: 
+          schema: 
+            type: array
+            items: 
+              $ref: ../../components/schemas/Author.yaml
+    '400': 
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml

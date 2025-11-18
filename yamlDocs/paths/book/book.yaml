@@ -1,0 +1,48 @@
+get: 
+  summary: list all books
+  tags: 
+    - Book 
+  parameters: 
+    - name: completed
+      in: query
+      required: false
+      description: filter books by completion status
+      schema: 
+        type: boolean
+        example: true
+    - name: limit
+      in: query
+      required: false
+      description: maximum number of books to return
+      schema: 
+        type: integer
+        example: 10
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items: 
+              $ref: ../../components/schemas/Book.yaml
+
+post: 
+  summary: create a new book 
+  tags: 
+    - Book
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Book.yaml
+  responses:
+    '201':
+      description: book created successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Book.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml

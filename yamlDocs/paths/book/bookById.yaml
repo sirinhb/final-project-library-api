@@ -1,0 +1,69 @@
+get: 
+  summary: get book by ID
+  tags: 
+    - Book 
+  parameters: 
+    - name: id 
+      in: path
+      required: true 
+      description: ID of the book to retrieve
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '200': 
+      description: OK
+      content: 
+        application/json: 
+          schema:   
+            $ref: ../../components/schemas/Book.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+put: 
+  summary: update existing book by Id
+  tags: 
+    - Book
+  parameters: 
+    - name: id
+      in: path
+      required: true
+      description: ID of the book to update
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '200':
+      description: OK
+      content: 
+        application/json: 
+          schema: 
+            $ref: ../../components/schemas/Book.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+delete: 
+  summary: Delete book by id
+  tags: 
+    - Book
+  parameters: 
+    - name: id 
+      in: path
+      required: true
+      description: ID of the book to delete
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '200': 
+      description: OK
+      content: 
+        application/json: 
+          schema:  
+              $ref: ../../components/schemas/Book.yaml
+    '400': 
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml

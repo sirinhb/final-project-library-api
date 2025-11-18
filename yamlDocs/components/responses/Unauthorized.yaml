@@ -1,0 +1,5 @@
+description: Unauthorized - Invalid or missing authentication token
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/UnauthorizedError.yaml

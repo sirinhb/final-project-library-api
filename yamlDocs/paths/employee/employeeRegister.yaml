@@ -1,0 +1,55 @@
+post:
+  summary: Register a new employee
+  tags:
+    - Employee
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - password
+            - role
+          properties:
+            name:
+              type: string
+              example: John Doe
+            password:
+              type: string
+              format: password
+              example: password123
+            role:
+              type: string
+              enum: [LIBRARIAN, MANAGER]
+              example: LIBRARIAN
+  responses:
+    '201':
+      description: Employee registered successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: John Doe
+              role:
+                type: string
+                example: LIBRARIAN
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '409':
+      description: Employee with this name already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Employee with this name already exists
