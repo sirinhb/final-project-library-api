@@ -1,7 +1,9 @@
 get: 
   summary: get employee by ID
   tags: 
-    - Employee 
+    - Employee
+  security:
+    - bearerAuth: [] 
   parameters: 
     - name: id 
       in: path
@@ -25,6 +27,8 @@ put:
   summary: update existing employee by Id
   tags: 
     - Employee
+  security:
+    - bearerAuth: []
   parameters: 
     - name: id
       in: path
@@ -33,6 +37,17 @@ put:
       schema: 
         type: integer
         example: 1
+  requestBody: 
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            role: 
+              type: string
+              enum: [LIBRARIAN, MANAGER]
+              example: MANAGER
   responses: 
     '200':
       description: OK
@@ -48,6 +63,8 @@ delete:
   summary: Delete employee by id
   tags: 
     - Employee
+  security:
+    - bearerAuth: []
   parameters: 
     - name: id 
       in: path

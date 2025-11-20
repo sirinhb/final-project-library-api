@@ -1,22 +1,9 @@
 get: 
   summary: list all genres
   tags: 
-    - Genre 
-  parameters: 
-    - name: completed
-      in: query
-      required: false
-      description: filter genres by completion status
-      schema: 
-        type: boolean
-        example: true
-    - name: limit
-      in: query
-      required: false
-      description: maximum number of genres to return
-      schema: 
-        type: integer
-        example: 10
+    - Genre
+  security:
+    - bearerAuth: [] 
   responses:
     '200':
       description: OK
@@ -31,6 +18,8 @@ post:
   summary: create a new genre 
   tags: 
     - Genre
+  security:
+    - bearerAuth: []
   requestBody:
     required: true
     content:

@@ -3,14 +3,16 @@ info:
   title: 'Library API'
   version: 1.0.0
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:3000/api
     description: local development server 
-  - url: https://library-api-hvyv.onrender.com
+  - url: https://library-api-hvyv.onrender.com/api
     description: Production server on render
 tags:
   - name: Library
     description: Library-related endpoints
 paths:
+  /auth/login:
+    $ref: paths/login/login.yaml
   /employees: 
     $ref: paths/employee/employee.yaml
   /employees/{id}: 
@@ -19,15 +21,15 @@ paths:
     $ref: paths/employee/employeeByMe.yaml
   /employees/register:
     $ref: paths/employee/employeeRegister.yaml
-  /author:
+  /authors:
     $ref: paths/author/author.yaml
-  /author/{id}:
+  /authors/{id}:
     $ref: paths/author/authorById.yaml
-  /author/{id}/books:
+  /authors/{id}/books:
     $ref: paths/author/authorBooksById.yaml
-  /book:
+  /books:
     $ref: paths/book/book.yaml
-  /book/{id}:
+  /books/{id}:
     $ref: paths/book/bookById.yaml
   /genre: 
     $ref: paths/genre/genre.yaml
@@ -35,4 +37,11 @@ paths:
     $ref: paths/genre/genreById.yaml
   /genre/{id}/books:
     $ref: paths/genre/genreBooksById.yaml
-  
+#security login
+components: 
+  securitySchemes:
+    bearerAuth: 
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter your JWT token for authorization

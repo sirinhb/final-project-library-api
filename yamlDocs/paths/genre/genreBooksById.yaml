@@ -2,6 +2,8 @@ get:
   summary: Get all books in a specific genre
   tags:
     - Genre
+  security:
+    - bearerAuth: []
   parameters:
     - name: id
       in: path

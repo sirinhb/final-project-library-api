@@ -1,22 +1,9 @@
 get: 
   summary: list all authors
   tags: 
-    - Author 
-  parameters: 
-    - name: completed
-      in: query
-      required: false
-      description: filter authors by completion status
-      schema: 
-        type: boolean
-        example: true
-    - name: limit
-      in: query
-      required: false
-      description: maximum number of authors to return
-      schema: 
-        type: integer
-        example: 10
+    - Author
+  security:
+    - bearerAuth: [] 
   responses:
     '200':
       description: OK
@@ -31,6 +18,8 @@ post:
   summary: create a new author 
   tags: 
     - Author
+  security:
+    - bearerAuth: [] 
   requestBody:
     required: true
     content:
@@ -46,3 +35,15 @@ post:
             $ref: ../../components/schemas/Author.yaml
     '400':
       $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '409':
+      description: Author with this name already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Author with this name already exists

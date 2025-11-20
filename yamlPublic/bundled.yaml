@@ -3,19 +3,69 @@ info:
   title: Library API
   version: 1.0.0
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:3000/api
     description: local development server
-  - url: https://library-api-hvyv.onrender.com
+  - url: https://library-api-hvyv.onrender.com/api
     description: Production server on render
 tags:
   - name: Library
     description: Library-related endpoints
 paths:
+  /auth/login:
+    post:
+      summary: Employee login
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - password
+              properties:
+                name:
+                  type: string
+                  example: Steve Jobs
+                  description: Employee's name
+                password:
+                  type: string
+                  format: password
+                  example: steve1234
+                  description: Employee's password
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlN0ZXZlIEpvYnMiLCJyb2xlIjoiTUFOQUdFUiIsImlhdCI6MTYzMjg1MDAwMCwiZXhwIjoxNjMyOTM2NDAwfQ.example
+                    description: JWT authentication token
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid credentials
   /employees:
     get:
       summary: list all employees
       tags:
         - Employee
+      security:
+        - bearerAuth: []
       parameters:
         - name: role
           in: query
@@ -41,6 +91,8 @@ paths:
       summary: get employee by ID
       tags:
         - Employee
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -64,6 +116,8 @@ paths:
       summary: update existing employee by Id
       tags:
         - Employee
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -72,6 +126,19 @@ paths:
           schema:
             type: integer
             example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum:
+                    - LIBRARIAN
+                    - MANAGER
+                  example: MANAGER
       responses:
         '200':
           description: OK
@@ -87,6 +154,8 @@ paths:
       summary: Delete employee by id
       tags:
         - Employee
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -178,6 +247,8 @@ paths:
       summary: Register a new employee
       tags:
         - Employee
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -231,26 +302,13 @@ paths:
                   error:
                     type: string
                     example: Employee with this name already exists
-  /author:
+  /authors:
     get:
       summary: list all authors
       tags:
         - Author
-      parameters:
-        - name: completed
-          in: query
-          required: false
-          description: filter authors by completion status
-          schema:
-            type: boolean
-            example: true
-        - name: limit
-          in: query
-          required: false
-          description: maximum number of authors to return
-          schema:
-            type: integer
-            example: 10
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: OK
@@ -264,6 +322,8 @@ paths:
       summary: create a new author
       tags:
         - Author
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -279,11 +339,25 @@ paths:
                 $ref: '#/components/schemas/Author'
         '400':
           $ref: '#/components/responses/BadRequest'
-  /author/{id}:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Author with this name already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Author with this name already exists
+  /authors/{id}:
     get:
       summary: get author by ID
       tags:
         - Author
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -298,7 +372,6 @@ paths:
           content:
             application/json:
               schema: null
-              type: array
               items:
                 $ref: ../../components/schemas/Author.yaml
         '400':
@@ -309,6 +382,8 @@ paths:
       summary: update existing author by Id
       tags:
         - Author
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -317,6 +392,19 @@ paths:
           schema:
             type: integer
             example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: Hafsah
+                lastName:
+                  type: string
+                  example: Faizal Updated
       responses:
         '200':
           description: OK
@@ -332,6 +420,8 @@ paths:
       summary: Delete author by id
       tags:
         - Author
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -341,23 +431,21 @@ paths:
             type: integer
             example: 1
       responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Author'
+        '204':
+          description: Successfully deleted (no content)
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-  /author/{id}/books:
+  /authors/{id}/books:
     get:
       summary: Get all books by a specific author
       tags:
         - Author
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -399,19 +487,43 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
-  /book:
+  /books:
     get:
       summary: list all books
       tags:
         - Book
+      security:
+        - bearerAuth: []
       parameters:
-        - name: completed
+        - name: search
           in: query
           required: false
-          description: filter books by completion status
+          description: Search books
           schema:
-            type: boolean
-            example: true
+            type: string
+            example: Flame
+        - name: sortBy
+          in: query
+          required: false
+          description: sort books by a field (e.g., title, author)
+          schema:
+            type: string
+            enum:
+              - title
+              - id
+              - author
+              - genre
+            example: title
+        - name: sortOrder
+          in: query
+          required: false
+          description: sort order (asc or desc)
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            example: asc
         - name: limit
           in: query
           required: false
@@ -419,6 +531,13 @@ paths:
           schema:
             type: integer
             example: 10
+        - name: offset
+          in: query
+          required: false
+          description: number of books to skip
+          schema:
+            type: integer
+            example: 0
       responses:
         '200':
           description: OK
@@ -428,16 +547,43 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
     post:
       summary: create a new book
       tags:
         - Book
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Book'
+              type: object
+              required:
+                - title
+                - author
+                - genre
+                - price
+                - stock
+              properties:
+                title:
+                  type: string
+                  example: Mission Impossible
+                author:
+                  type: string
+                  example: Ethan Hunt
+                genre:
+                  type: string
+                  example: action
+                price:
+                  type: number
+                  format: float
+                  example: 20
+                stock:
+                  type: integer
+                  example: 2
       responses:
         '201':
           description: book created successfully
@@ -447,11 +593,13 @@ paths:
                 $ref: '#/components/schemas/Book'
         '400':
           $ref: '#/components/responses/BadRequest'
-  /book/{id}:
+  /books/{id}:
     get:
       summary: get book by ID
       tags:
         - Book
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -475,6 +623,8 @@ paths:
       summary: update existing book by Id
       tags:
         - Book
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -483,6 +633,20 @@ paths:
           schema:
             type: integer
             example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: number
+                  format: float
+                  example: 25
+                stock:
+                  type: integer
+                  example: 5
       responses:
         '200':
           description: OK
@@ -498,6 +662,8 @@ paths:
       summary: Delete book by id
       tags:
         - Book
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -507,14 +673,12 @@ paths:
             type: integer
             example: 1
       responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
+        '204':
+          description: Successfully deleted (no content)
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
   /genre:
@@ -522,21 +686,8 @@ paths:
       summary: list all genres
       tags:
         - Genre
-      parameters:
-        - name: completed
-          in: query
-          required: false
-          description: filter genres by completion status
-          schema:
-            type: boolean
-            example: true
-        - name: limit
-          in: query
-          required: false
-          description: maximum number of genres to return
-          schema:
-            type: integer
-            example: 10
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: OK
@@ -550,6 +701,8 @@ paths:
       summary: create a new genre
       tags:
         - Genre
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -570,6 +723,8 @@ paths:
       summary: get genre by ID
       tags:
         - Genre
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -583,10 +738,8 @@ paths:
           description: OK
           content:
             application/json:
-              schema: null
-              type: array
-              items:
-                $ref: ../../components/schemas/Genre.yaml
+              schema:
+                $ref: '#/components/schemas/Genre'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -595,6 +748,8 @@ paths:
       summary: update existing genre by Id
       tags:
         - Genre
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -603,6 +758,18 @@ paths:
           schema:
             type: integer
             example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: Science Fiction
       responses:
         '200':
           description: OK
@@ -618,6 +785,8 @@ paths:
       summary: Delete genre by id
       tags:
         - Genre
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -627,16 +796,12 @@ paths:
             type: integer
             example: 1
       responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Genre'
+        '204':
+          description: Successfully deleted (no content)
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
   /genre/{id}/books:
@@ -644,6 +809,8 @@ paths:
       summary: Get all books in a specific genre
       tags:
         - Genre
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -686,7 +853,23 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter your JWT token for authorization
   schemas:
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Validation failed
+        details:
+          type: array
+          items:
+            type: string
     Employee:
       type: object
       properties:
@@ -718,16 +901,6 @@ components:
       required:
         - name
         - role
-    ValidationError:
-      type: object
-      properties:
-        error:
-          type: string
-          example: Validation failed
-        details:
-          type: array
-          items:
-            type: string
     NotFoundError:
       type: object
       properties:

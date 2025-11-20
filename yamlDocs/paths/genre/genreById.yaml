@@ -1,7 +1,9 @@
 get: 
   summary: get genre by ID
   tags: 
-    - Genre 
+    - Genre
+  security:
+    - bearerAuth: [] 
   parameters: 
     - name: id 
       in: path
@@ -15,9 +17,7 @@ get:
       description: OK
       content: 
         application/json: 
-          schema: 
-          type: array
-          items:  
+          schema:  
             $ref: ../../components/schemas/Genre.yaml
     '400':
       $ref: ../../components/responses/BadRequest.yaml
@@ -27,6 +27,8 @@ put:
   summary: update existing genre by Id
   tags: 
     - Genre
+  security:
+    - bearerAuth: []
   parameters: 
     - name: id
       in: path
@@ -35,6 +37,18 @@ put:
       schema: 
         type: integer
         example: 1
+  requestBody: 
+    required: true
+    content: 
+      application/json: 
+        schema: 
+          type: object 
+          required: 
+            - name
+          properties: 
+            name: 
+              type: string
+              example: Science Fiction
   responses: 
     '200':
       description: OK
@@ -50,6 +64,8 @@ delete:
   summary: Delete genre by id
   tags: 
     - Genre
+  security:
+    - bearerAuth: []
   parameters: 
     - name: id 
       in: path
@@ -59,15 +75,11 @@ delete:
         type: integer
         example: 1
   responses: 
-    '200': 
-      description: OK
-      content: 
-        application/json: 
-          schema: 
-            type: array
-            items: 
-              $ref: ../../components/schemas/Genre.yaml
+    '204':
+      description: Successfully deleted (no content) 
     '400': 
       $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
     '404':
       $ref: ../../components/responses/NotFound.yaml

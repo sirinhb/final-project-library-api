@@ -1,7 +1,9 @@
 get: 
   summary: list all employees
   tags: 
-    - Employee 
+    - Employee
+  security:
+    - bearerAuth: [] 
   parameters: 
     - name: role
       in: query

@@ -2,6 +2,8 @@ get:
   summary: Get all books by a specific author
   tags:
     - Author
+  security:
+    - bearerAuth: []
   parameters:
     - name: id
       in: path

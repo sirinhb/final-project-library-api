@@ -1,9 +1,7 @@
 post:
-  summary: Register a new employee
+  summary: Employee login
   tags:
-    - Employee
-  security:
-    - bearerAuth: []
+    - Authentication
   requestBody:
     required: true
     content:
@@ -13,40 +11,32 @@ post:
           required:
             - name
             - password
-            - role
           properties:
             name:
               type: string
-              example: John Doe
+              example: Steve Jobs
+              description: Employee's name
             password:
               type: string
               format: password
-              example: password123
-            role:
-              type: string
-              enum: [LIBRARIAN, MANAGER]
-              example: LIBRARIAN
+              example: steve1234
+              description: Employee's password
   responses:
-    '201':
-      description: Employee registered successfully
+    '200':
+      description: OK
       content:
         application/json:
           schema:
             type: object
             properties:
-              id:
-                type: integer
-                example: 1
-              name:
+              token:
                 type: string
-                example: John Doe
-              role:
-                type: string
-                example: LIBRARIAN
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlN0ZXZlIEpvYnMiLCJyb2xlIjoiTUFOQUdFUiIsImlhdCI6MTYzMjg1MDAwMCwiZXhwIjoxNjMyOTM2NDAwfQ.example
+                description: JWT authentication token
     '400':
       $ref: ../../components/responses/BadRequest.yaml
-    '409':
-      description: Employee with this name already exists
+    '401':
+      description: Invalid credentials
       content:
         application/json:
           schema:
@@ -54,4 +44,4 @@ post:
             properties:
               error:
                 type: string
-                example: Employee with this name already exists
+                example: Invalid credentials
