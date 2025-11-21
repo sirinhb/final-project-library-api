@@ -28,22 +28,27 @@ export async function registerEmployee(data) {
   return await employeeRepo.createEmployee(data);
 }
 
-export async function updateEmployeeRole(id, role) {
-  if (!role) {
-    const error = new Error('Role is required');
-    error.status = 400;
-    throw error;
-  }
+export async function updateEmployeeRole(id, updates) {
+    const employee = await employeeRepo.findEmployeeById(id);
 
-  const employee = await employeeRepo.findEmployeeById(id)
-
-  if (!employee){
+  if (!employee) {
     const error = new Error('Employee not found');
     error.status = 404;
     throw error;
   }
 
-  return await employeeRepo.updateEmployee(id, { role });
+  const fieldsToUpdate = {};
+  if (updates.role) fieldsToUpdate.role = updates.role;
+  if (updates.name) fieldsToUpdate.name = updates.name;
+  if (updates.password) fieldsToUpdate.password = updates.password;
+
+  if (Object.keys(fieldsToUpdate).length === 0) {
+    const error = new Error('You must update at least one of role, name, or password');
+    error.status = 400;
+    throw error;
+  }
+
+  return await employeeRepo.updateEmployee(id, fieldsToUpdate);
 }
 
 export async function updateMyProfile(id, data) {

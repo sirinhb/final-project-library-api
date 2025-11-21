@@ -31,13 +31,27 @@ export const validateEmployeeRegistration = [
 
 export const validateEmployeeUpdate = [
   body('role')
-    .exists({ checkFalsy: true })
-    .withMessage('Role is required')
+    .optional({ checkFalsy: true })
     .isString()
     .withMessage('Role must be a string')
+    .trim()
     .customSanitizer(value => value.toUpperCase())
     .isIn(['LIBRARIAN', 'MANAGER'])
     .withMessage('Role must be either LIBRARIAN or MANAGER'),
+
+   body('name')
+    .optional({ checkFalsy: true })
+    .isString()
+    .withMessage('Name must be a string')
+    .trim(),
+
+
+  body().custom(value => {
+    if (!value.role && !value.name) {
+      throw new Error('You must update at least one of role, or name');
+    }
+    return true;
+  }),
   
   handleValidationErrors,
 ];

@@ -49,15 +49,23 @@ export async function registerEmployee(req, res) {
 export async function updateEmployeeRole(req, res) {
   try {
     const id = parseInt(req.params.id);
-    let { role } = req.body;
+    const updates = {};
 
-    if(role) {
-      role = role.toUpperCase();
+    // Include role if provided
+    if (req.body.role) updates.role = req.body.role.toUpperCase();
+
+    // Include name if provided
+    if (req.body.name) updates.name = req.body.name;
+
+
+    
+    const employee = await employeeService.updateEmployeeRole(id, updates);
+
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found' });
     }
 
-  const employee = await employeeService.updateEmployeeRole(id, role);
-
-  res.json(employee);
+    res.json(employee);
   } catch (error) {
     console.error('Update employee error:', error);
 
@@ -66,10 +74,10 @@ export async function updateEmployeeRole(req, res) {
     }
 
     if (error.status === 404) {
-      return res.status(404).json({error: error.message});
+      return res.status(404).json({ error: error.message });
     }
 
-    res.status(500).json({error: 'Internal Server Error'});
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
