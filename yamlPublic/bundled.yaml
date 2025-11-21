@@ -3,10 +3,10 @@ info:
   title: Library API
   version: 1.0.0
 servers:
+  - url: https://final-project-library-api.onrender.com/api
+    description: Production server on render
   - url: http://localhost:3000/api
     description: local development server
-  - url: https://library-api-hvyv.onrender.com/api
-    description: Production server on render
 tags:
   - name: Library
     description: Library-related endpoints
