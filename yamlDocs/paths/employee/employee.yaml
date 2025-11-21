@@ -1,0 +1,24 @@
+get: 
+  summary: list all employees
+  tags: 
+    - Employee
+  security:
+    - bearerAuth: [] 
+  parameters: 
+    - name: role
+      in: query
+      required: false
+      description: filter employees by role
+      schema: 
+        type: string
+        enum: [LIBRARIAN, MANAGER]
+        example: MANAGER
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items: 
+              $ref: ../../components/schemas/Employee.yaml

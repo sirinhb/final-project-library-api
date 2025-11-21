@@ -2,10 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 import authRoutes from './routes/authRoutes.js';
 import genreRoutes from './routes/genreRoutes.js';
 import bookRoutes from './routes/bookRoutes.js';
-
 import authorRoutes from './routes/authorRoutes.js';
 import employeeRoutes from './routes/employeeRoutes.js';
 dotenv.config();
@@ -17,6 +18,9 @@ app.use(cors());
 app.use(morgan('tiny'));
 
 app.use(express.json());
+
+const specs = YAML.load('./yamlPublic/bundled.yaml');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 
 app.use('/api/auth', authRoutes);

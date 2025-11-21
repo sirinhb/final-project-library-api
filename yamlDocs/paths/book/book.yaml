@@ -1,0 +1,100 @@
+get: 
+  summary: list all books
+  tags: 
+    - Book
+  security:
+    - bearerAuth: [] 
+  parameters:
+    - name: search
+      in: query
+      required: false
+      description: Search books
+      schema: 
+        type: string
+        example: Flame
+    - name: sortBy
+      in: query
+      required: false
+      description: sort books by a field (e.g., title, author)
+      schema:
+        type: string
+        enum: [title, id, author, genre]
+        example: title
+    - name: sortOrder
+      in: query
+      required: false
+      description: sort order (asc or desc)
+      schema: 
+        type: string
+        enum: [asc, desc]
+        example: asc
+    - name: limit 
+      in: query
+      required: false
+      description: maximum number of books to return
+      schema: 
+        type: integer
+        example: 10
+    - name: offset
+      in: query
+      required: false
+      description: number of books to skip
+      schema: 
+        type: integer
+        example: 0
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items: 
+              $ref: ../../components/schemas/Book.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+
+post: 
+  summary: create a new book 
+  tags: 
+    - Book
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object 
+          required: 
+          - title
+          - author
+          - genre 
+          - price 
+          - stock
+          properties: 
+            title: 
+              type: string
+              example: Mission Impossible
+            author: 
+              type: string
+              example: Ethan Hunt
+            genre: 
+              type: string
+              example: action
+            price: 
+              type: number
+              format: float
+              example: 20.00
+            stock: 
+              type: integer
+              example: 2        
+  responses:
+    '201':
+      description: book created successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Book.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml

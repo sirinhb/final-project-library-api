@@ -1,0 +1,88 @@
+get: 
+  summary: get author by ID
+  tags: 
+    - Author
+  security:
+    - bearerAuth: [] 
+  parameters: 
+    - name: id 
+      in: path
+      required: true 
+      description: ID of the author to retrieve
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '200': 
+      description: OK
+      content: 
+        application/json: 
+          schema: 
+          items:  
+            $ref: ../../components/schemas/Author.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+put: 
+  summary: update existing author by Id
+  tags: 
+    - Author
+  security:
+    - bearerAuth: []
+  parameters: 
+    - name: id
+      in: path
+      required: true
+      description: ID of the author to update
+      schema: 
+        type: integer
+        example: 1
+  requestBody:  
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              firstName:
+                type: string
+                example: Hafsah
+              lastName:
+                type: string
+                example: Faizal Updated
+  responses: 
+    '200':
+      description: OK
+      content: 
+        application/json: 
+          schema: 
+            $ref: ../../components/schemas/Author.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+
+delete: 
+  summary: Delete author by id
+  tags: 
+    - Author
+  security:
+    - bearerAuth: []
+  parameters: 
+    - name: id 
+      in: path
+      required: true
+      description: ID of the author to delete
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '204': 
+      description: Successfully deleted (no content)
+    '400': 
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml

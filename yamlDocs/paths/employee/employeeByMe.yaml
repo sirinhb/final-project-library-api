@@ -1,0 +1,70 @@
+get:
+  summary: Get current employee profile
+  tags:
+    - Employee
+  security:
+    - bearerAuth: []
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: Steve Jobs
+              role:
+                type: string
+                enum: [LIBRARIAN, MANAGER]
+                example: MANAGER
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+
+put:
+  summary: Update current employee profile
+  tags:
+    - Employee
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Steve Jobs Updated
+            password:
+              type: string
+              example: newpassword123
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: Steve Jobs Updated
+              role:
+                type: string
+                example: MANAGER
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+            

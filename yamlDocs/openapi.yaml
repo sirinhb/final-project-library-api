@@ -1,0 +1,47 @@
+openapi: 3.1.0
+info:
+  title: 'Library API'
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: local development server 
+  - url: https://library-api-hvyv.onrender.com/api
+    description: Production server on render
+tags:
+  - name: Library
+    description: Library-related endpoints
+paths:
+  /auth/login:
+    $ref: paths/login/login.yaml
+  /employees: 
+    $ref: paths/employee/employee.yaml
+  /employees/{id}: 
+    $ref: paths/employee/employeeById.yaml
+  /employees/me:
+    $ref: paths/employee/employeeByMe.yaml
+  /employees/register:
+    $ref: paths/employee/employeeRegister.yaml
+  /authors:
+    $ref: paths/author/author.yaml
+  /authors/{id}:
+    $ref: paths/author/authorById.yaml
+  /authors/{id}/books:
+    $ref: paths/author/authorBooksById.yaml
+  /books:
+    $ref: paths/book/book.yaml
+  /books/{id}:
+    $ref: paths/book/bookById.yaml
+  /genre: 
+    $ref: paths/genre/genre.yaml
+  /genre/{id}: 
+    $ref: paths/genre/genreById.yaml
+  /genre/{id}/books:
+    $ref: paths/genre/genreBooksById.yaml
+#security login
+components: 
+  securitySchemes:
+    bearerAuth: 
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter your JWT token for authorization

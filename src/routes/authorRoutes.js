@@ -11,7 +11,7 @@ import {
 //import { validateAuthor, validateAuthorUpdate, validateAuthorId } from '../middleware/validateAuthor.js';
 import { authenticate } from '../middleware/authenticate.js';
 import { authorizeRole } from '../middleware/authorizeRole.js';
-import { validateAuthor, validateAuthorUpdate, validateAuthorId } from '../middleware/validateAuthor.js';
+import { validateAuthor, validateAuthorUpdate, validateAuthorId, validateAuthorCreate } from '../middleware/validateAuthor.js';
 
 const router = express.Router();
 
@@ -25,7 +25,7 @@ router.get('/:id', authenticate, validateAuthorId, getAuthorById);
 router.get('/:id/books', authenticate, validateAuthorId, getAuthorBooksById);
 
 // CREATE - Manager only (role-based)
-router.post('/', authenticate, authorizeRole('MANAGER'), validateAuthor, createAuthor);
+router.post('/', authenticate, authorizeRole('MANAGER'), validateAuthorCreate, createAuthor);
 
 // UPDATE - Manager only (role-based)
 router.put('/:id', authenticate, authorizeRole('MANAGER'), validateAuthorUpdate, updateAuthor);

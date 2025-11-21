@@ -8,21 +8,9 @@ export async function createAuthor(authorData) {
 }
 
 //get all authors (get)
-export async function findAllAuthors(filter = {}) {
-    const where = {};
-
-    if (filter.name) {
-        where.OR = [
-            { firstName: { contains: filter.name, mode: 'insensitive' } },
-            { lastName: { contains: filter.name, mode: 'insensitive' } }
-        ];
-    }
-
+export async function findAllAuthors() {
     
-    return await prisma.author.findMany({
-        where 
-    });
-    
+    return await prisma.author.findMany();
 }
 
 //get author by id (get/id)

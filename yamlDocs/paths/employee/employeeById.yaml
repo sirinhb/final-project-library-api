@@ -1,0 +1,82 @@
+get: 
+  summary: get employee by ID
+  tags: 
+    - Employee
+  security:
+    - bearerAuth: [] 
+  parameters: 
+    - name: id 
+      in: path
+      required: true 
+      description: ID of the employee to retrieve
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '200': 
+      description: OK
+      content: 
+        application/json: 
+          schema: 
+            $ref: ../../components/schemas/Employee.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+put: 
+  summary: update existing employee by Id
+  tags: 
+    - Employee
+  security:
+    - bearerAuth: []
+  parameters: 
+    - name: id
+      in: path
+      required: true
+      description: ID of the employee to update
+      schema: 
+        type: integer
+        example: 1
+  requestBody: 
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            role: 
+              type: string
+              enum: [LIBRARIAN, MANAGER]
+              example: MANAGER
+  responses: 
+    '200':
+      description: OK
+      content: 
+        application/json: 
+          schema: 
+            $ref: ../../components/schemas/Employee.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+delete: 
+  summary: Delete employee by id
+  tags: 
+    - Employee
+  security:
+    - bearerAuth: []
+  parameters: 
+    - name: id 
+      in: path
+      required: true
+      description: ID of the employee to delete
+      schema: 
+        type: integer
+        example: 1
+  responses: 
+    '204': 
+      description: Employee deleted successfully (no content)
+    '400': 
+      $ref: ../../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml

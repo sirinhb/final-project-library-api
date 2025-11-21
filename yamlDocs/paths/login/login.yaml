@@ -1,0 +1,47 @@
+post:
+  summary: Employee login
+  tags:
+    - Authentication
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - password
+          properties:
+            name:
+              type: string
+              example: Steve Jobs
+              description: Employee's name
+            password:
+              type: string
+              format: password
+              example: steve1234
+              description: Employee's password
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlN0ZXZlIEpvYnMiLCJyb2xlIjoiTUFOQUdFUiIsImlhdCI6MTYzMjg1MDAwMCwiZXhwIjoxNjMyOTM2NDAwfQ.example
+                description: JWT authentication token
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Invalid credentials

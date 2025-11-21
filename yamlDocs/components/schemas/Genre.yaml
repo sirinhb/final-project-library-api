@@ -1,0 +1,32 @@
+type: object
+properties:
+  id:
+    type: integer
+    readOnly: true
+    example: 1
+    description: Unique identifier for the genre
+  name:
+    type: string
+    minLength: 2
+    maxLength: 50
+    example: Fantasy
+    description: Name of the genre (must be unique)
+  books:
+    type: array
+    readOnly: true
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        authorId:
+          type: integer
+        price:
+          type: number
+        stock:
+          type: integer
+    description: List of books in this genre (only included in certain endpoints)
+required:
+  - name
